@@ -1,15 +1,17 @@
-import { inject, Service, signal} from '@angular/core';
+import { computed, inject, Service, signal} from '@angular/core';
 import { Player } from '../../state/models/player';
 import { PlayerStore } from '../../state/store/player.store';
 
 @Service()
 export class PlayerSeatService {
     private playerStore = inject(PlayerStore);
-    // private commanderStore = inject()
     private playerId!: Player['id'];
 
     currentHealth = signal(40); // Will be configured by the player
-    commanderTax= signal(0);
+    commanderTax = signal(0);
+    isCommanderDamAssigningAndCurrentUser = computed(() => {
+      return this.playerStore.isAssigningCommanderDamage() && (this.playerStore.assigningCommanderDamage() === this.playerId)
+    })
 
     setPlayerId(id: Player['id']): void {
       this.playerId = id;
@@ -30,6 +32,14 @@ export class PlayerSeatService {
 
    decreaseCommaderTax() {
     this.commanderTax.update(tax => tax - 1);
+   }
+
+   openCommanderDamageAssignment(): void {
+    this.playerStore.setAssigningCommanderDamage(this.playerId);
+   }
+
+   closeCommanderDamageAssignment(): void {
+    this.playerStore.clearAssigningCommadanderDamage();
    }
 
     

@@ -24,7 +24,6 @@ export class CommandTaxMenuComponent {
     effect(() => {
       this.updatedTax.set(this.tax());
       this.commanders = this.playerStore.commandersByOwnerId()[this.playerId()];
-      console.log("=== ", this.commanders)
     })
   }
 

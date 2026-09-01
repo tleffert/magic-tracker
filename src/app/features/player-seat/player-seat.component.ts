@@ -32,4 +32,8 @@ export class PlayerSeatComponent implements OnInit{
   updateTax(tax: number): void {
     this.playerSeatService.updateCommanderTax(tax);
   }
+
+  openAssigningCommanderDamage(): void {
+    this.playerSeatService.openCommanderDamageAssignment();
+  }
 }
