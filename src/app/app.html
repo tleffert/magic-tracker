@@ -1,0 +1,11 @@
+@let players = playerEntities();
+
+<button (click)="addPlayer()">add player</button>
+
+@for(player of players; track player.id) {
+    <app-player-seat [player]="player"></app-player-seat>
+
+}
+
+
+<router-outlet />

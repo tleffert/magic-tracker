@@ -1,0 +1,44 @@
+@let tax = playerSeatService.commanderTax();
+@let seatedPlayer = player();
+
+
+@if (taxMenuActive) {
+    <!-- input current tax -->
+    <command-tax-menu-component [playerId]="seatedPlayer.id" (close)="toggleTaxMenu(); updateTax($event)" ></command-tax-menu-component>
+} @else {
+
+<div class="command-block">
+
+   
+ <!-- // Clicking / Tapping this will show commander damage from all other players -->
+ <button>Commander</button>
+ <div class="command-tax">
+     @if (!tax){
+         <span (click)="toggleTaxMenu()">Tax</span>
+     } @else {
+         <span>{{tax}}</span>
+     }
+ </div>
+ <div class="commander-damage">
+    <button>Damage</button>
+ </div>
+   
+</div>
+<div>
+    <div>
+        <span>Player Seat</span>
+    </div>
+    <!-- move to component -->
+    <div class="health-container">
+        <value-step-component [value]="seatedPlayer.health" (step)="updateHealth($event)"></value-step-component>
+        <!-- <button class="health-button" (click)="decreaseHealth()">-</button>
+        <span>{{ seatedPlayer.health }}</span>
+        <button class="health-button" (click)="increaseHealth()">+</button> -->
+    </div>
+</div>
+<div>
+   <button>Counters</button> 
+   <!-- poison / monarch reminders -->
+</div>
+
+}

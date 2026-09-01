@@ -1,0 +1,14 @@
+:host {
+    gap: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.stepper {
+    border-radius: 20px;
+    width: 24px;
+    height: 24px;
+    border: none;
+    cursor: pointer;
+}
