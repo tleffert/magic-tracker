@@ -15,13 +15,28 @@ export function withCommanderDamage() {
     return signalStoreFeature(
         withEntities(commanderDamageConfig),
         withComputed((store) => ({
-            incomingCommanderDamageByPlayerId: computed(() => {
+            commanderDamageByCommanderByPlayerId: computed(() => {
                 const byTarget: Record<Player['id'], CommanderDamage[]> = {};
                 for (const damage of store.commanderDamageEntities()) {
                     (byTarget[damage.targetPlayerId] ??= []).push(damage);
                 }
                 return byTarget;
             }),
+        })),
+        withComputed((store) => ({
+            totalCommanderDamageToPlayerById: computed(() => {
+                const damageByPlayer: Record<Player['id'], number> = {};
+                const playerCommanderDamagebyCommander = store.commanderDamageByCommanderByPlayerId();
+                // nested loop not the best looking
+                for(const [playerId, commanderDamages] of Object.entries(playerCommanderDamagebyCommander)) {
+                   const totalForPlayer = commanderDamages.reduce<number>((totalDamage: number, commanderDamage: CommanderDamage) => {
+                        return totalDamage + commanderDamage.amount;
+                    }, 0);
+
+                    damageByPlayer[playerId] = totalForPlayer ?? 0;
+                }
+                return damageByPlayer;
+            })
         })),
         withMethods((store) => ({
             addCommanderDamage(
