@@ -1,42 +1,34 @@
 import { computed } from '@angular/core';
-import { patchState, signalStoreFeature, type, withComputed, withMethods } from '@ngrx/signals';
-import { addEntity, entityConfig, updateEntity, withEntities } from '@ngrx/signals/entities';
+import { patchState, signalStoreFeature, withComputed, withMethods, withState } from '@ngrx/signals';
 import { Commander } from '../models/commander';
-import { CommanderDamage, commanderDamageId } from '../models/commander-damage';
+import { CommanderDamage, CommanderDamageByTarget } from '../models/commander-damage';
 import { Player } from '../models/player';
+import { updateEntity } from '@ngrx/signals/entities';
 
-export const commanderDamageConfig = entityConfig({
-    entity: type<CommanderDamage>(),
-    collection: 'commanderDamage',
-    selectId: (damage) => damage.id,
-});
+export type CommanderDamageState = {
+    commanderDamageByTarget: CommanderDamageByTarget;
+};
+
+const DEFAULT_COMMANDER_DAMAGE_STATE: CommanderDamageState = {
+    commanderDamageByTarget: {},
+};
 
 export function withCommanderDamage() {
     return signalStoreFeature(
-        withEntities(commanderDamageConfig),
-        withComputed((store) => ({
-            commanderDamageByCommanderByPlayerId: computed(() => {
-                const byTarget: Record<Player['id'], CommanderDamage[]> = {};
-                for (const damage of store.commanderDamageEntities()) {
-                    (byTarget[damage.targetPlayerId] ??= []).push(damage);
-                }
-                return byTarget;
-            }),
-        })),
+        withState(DEFAULT_COMMANDER_DAMAGE_STATE),
         withComputed((store) => ({
             totalCommanderDamageToPlayerById: computed(() => {
-                const damageByPlayer: Record<Player['id'], number> = {};
-                const playerCommanderDamagebyCommander = store.commanderDamageByCommanderByPlayerId();
-                // nested loop not the best looking
-                for(const [playerId, commanderDamages] of Object.entries(playerCommanderDamagebyCommander)) {
-                   const totalForPlayer = commanderDamages.reduce<number>((totalDamage: number, commanderDamage: CommanderDamage) => {
-                        return totalDamage + commanderDamage.amount;
-                    }, 0);
+                const byTarget = store.commanderDamageByTarget();
+                const totals: Record<Player['id'], number> = {};
 
-                    damageByPlayer[playerId] = totalForPlayer ?? 0;
+                for (const [playerId, byCommander] of Object.entries(byTarget)) {
+                    totals[playerId] = Object.values(byCommander).reduce(
+                        (sum, amount) => sum + amount,
+                        0,
+                    );
                 }
-                return damageByPlayer;
-            })
+                return totals;
+            }),
         })),
         withMethods((store) => ({
             addCommanderDamage(
@@ -44,27 +36,17 @@ export function withCommanderDamage() {
                 sourceCommanderId: Commander['id'],
                 amount: number,
             ): void {
-                const id = commanderDamageId(targetPlayerId, sourceCommanderId);
-                const existing = store.commanderDamageEntityMap()[id];
-
-                if (existing) {
-                    patchState(
-                        store,
-                        updateEntity(
-                            { id, changes: { amount: existing.amount + amount } },
-                            commanderDamageConfig,
-                        ),
-                    );
-                    return;
-                }
-
-                patchState(
-                    store,
-                    addEntity(
-                        { id, targetPlayerId, sourceCommanderId, amount },
-                        commanderDamageConfig,
-                    ),
-                );
+                const byTarget = store.commanderDamageByTarget();
+                const forPlayer = byTarget[targetPlayerId] ?? {};
+                patchState(store, {
+                    commanderDamageByTarget: {
+                        ...byTarget,
+                        [targetPlayerId]: {
+                            ...forPlayer,
+                            [sourceCommanderId]: (forPlayer[sourceCommanderId] ?? 0) + amount,
+                        },
+                    },
+                });
             },
         })),
     );
