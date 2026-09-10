@@ -1,5 +1,5 @@
-import { computed } from '@angular/core';
-import { patchState, signalStoreFeature, withComputed, withMethods, withState } from '@ngrx/signals';
+import { computed, Signal } from '@angular/core';
+import { patchState, signalStoreFeature, type, withComputed, withMethods, withState } from '@ngrx/signals';
 import { Commander } from '../models/commander';
 import { CommanderDamage, CommanderDamageByTarget } from '../models/commander-damage';
 import { Player } from '../models/player';
@@ -15,6 +15,11 @@ const DEFAULT_COMMANDER_DAMAGE_STATE: CommanderDamageState = {
 
 export function withCommanderDamage() {
     return signalStoreFeature(
+        {
+            state: type<{
+                assigningCommanderDamage: Player['id'] | undefined
+            }>()
+        },
         withState(DEFAULT_COMMANDER_DAMAGE_STATE),
         withComputed((store) => ({
             totalCommanderDamageToPlayerById: computed(() => {
@@ -38,6 +43,7 @@ export function withCommanderDamage() {
             ): void {
                 const byTarget = store.commanderDamageByTarget();
                 const forPlayer = byTarget[targetPlayerId] ?? {};
+                console.log("asdkjaskdjf", byTarget, forPlayer)
                 patchState(store, {
                     commanderDamageByTarget: {
                         ...byTarget,
@@ -47,6 +53,15 @@ export function withCommanderDamage() {
                         },
                     },
                 });
+            },
+            getCommanderDamageByAssigningPlayer(): Signal<Record<Commander['id'], number>> {
+                return computed(() => {
+                    const currentAssigningPlayer = store.assigningCommanderDamage();
+                    if (!currentAssigningPlayer) {
+                        return {};
+                    }
+                    return store.commanderDamageByTarget()[currentAssigningPlayer] ?? {};
+                })
             },
         })),
     );

@@ -1,0 +1,8 @@
+@let commanders = playerCommanders();
+@let targetDamageSources = targetPlayerDamageSources();
+
+@for (commander of commanders; track commander.id) {
+    <value-step-component [value]="targetDamageSources[commander.id] ?? 0" (step)="updateCommanderDamage(commander.id, $event)"></value-step-component>
+}
+
+<button (click)="togglePartnerCommander()"></button>

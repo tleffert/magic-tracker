@@ -7,10 +7,10 @@ import { withGameState } from './with-game-state';
 
 export const PlayerStore = signalStore(
     { providedIn: 'root' },
-    withPlayers(),
     withCommanders(),
-    withCommanderDamage(),
+    withPlayers(),
     withGameState(),
+    withCommanderDamage(),
     withMethods((store) => ({
         addPlayer(): void {
             const playerId = uuid();
