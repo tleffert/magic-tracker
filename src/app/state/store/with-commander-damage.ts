@@ -4,6 +4,7 @@ import { Commander } from '../models/commander';
 import { CommanderDamage, CommanderDamageByTarget } from '../models/commander-damage';
 import { Player } from '../models/player';
 import { updateEntity } from '@ngrx/signals/entities';
+import { getTotalCommanderDamageToPlayer } from '../utils/getTotalCommanderDamageToPlayer.function';
 
 export type CommanderDamageState = {
     commanderDamageByTarget: CommanderDamageByTarget;
@@ -26,11 +27,8 @@ export function withCommanderDamage() {
                 const byTarget = store.commanderDamageByTarget();
                 const totals: Record<Player['id'], number> = {};
 
-                for (const [playerId, byCommander] of Object.entries(byTarget)) {
-                    totals[playerId] = Object.values(byCommander).reduce(
-                        (sum, amount) => sum + amount,
-                        0,
-                    );
+                for (const playerId of Object.keys(byTarget)) {
+                    totals[playerId] = getTotalCommanderDamageToPlayer(playerId, byTarget);
                 }
                 return totals;
             }),
@@ -43,7 +41,6 @@ export function withCommanderDamage() {
             ): void {
                 const byTarget = store.commanderDamageByTarget();
                 const forPlayer = byTarget[targetPlayerId] ?? {};
-                console.log("asdkjaskdjf", byTarget, forPlayer)
                 patchState(store, {
                     commanderDamageByTarget: {
                         ...byTarget,
