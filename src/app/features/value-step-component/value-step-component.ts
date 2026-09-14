@@ -1,23 +1,26 @@
 import { Component, input, output } from '@angular/core';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+
 
 @Component({
-  imports: [],
+  imports: [MatIconModule, MatButtonModule],
   selector: 'value-step-component',
   styleUrl: './value-step-component.scss',
   templateUrl: './value-step-component.html',
 })
 export class ValueStepComponent {
-
+  // TODO maybe use signal forms here?
   value = input.required<number>();
-  step = output<number>();
-
+  stepSize = input<number>(1);
+  change = output<number>();
 
   increment(): void {
-    this.step.emit(1);
+    this.change.emit(this.value() + this.stepSize());
   }
 
   decrement(): void {
-    this.step.emit(-1);
+    this.change.emit(this.value() - this.stepSize());
   }
 
 }

@@ -1,8 +1,18 @@
 @let commanders = playerCommanders();
 @let targetDamageSources = targetPlayerDamageSources();
-
+<div class="commander-damage-assignment-container">
 @for (commander of commanders; track commander.id) {
-    <value-step-component [value]="targetDamageSources[commander.id] ?? 0" (step)="updateCommanderDamage(commander.id, $event)"></value-step-component>
+    <div class="commander-damage-assignment">
+        <value-step-component [value]="targetDamageSources[commander.id] ?? 0"
+        (change)="updateCommanderDamage(commander.id, $event)"></value-step-component>
+    </div>
 }
-
-<button (click)="togglePartnerCommander()"></button>
+</div>
+<section class="partner-section">
+    <mat-slide-toggle
+          class="partner-toggle"
+          (change)="togglePartnerCommander()"
+          >
+        Partner
+      </mat-slide-toggle>
+</section>

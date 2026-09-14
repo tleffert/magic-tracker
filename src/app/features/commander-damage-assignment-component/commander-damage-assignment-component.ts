@@ -3,9 +3,11 @@ import { ValueStepComponent } from '../value-step-component/value-step-component
 import { CommanderDamageAssignmentService } from '../../services/commander-damage-assignment-service';
 import { Commander } from '../../state/models/commander';
 import { PlayerSeatService } from '../player-seat/player-seat.service';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+
 
 @Component({
-  imports: [ValueStepComponent],
+  imports: [ValueStepComponent, MatSlideToggleModule],
   selector: 'commander-damage-assignment-component',
   styleUrl: './commander-damage-assignment-component.scss',
   templateUrl: './commander-damage-assignment-component.html',
@@ -16,7 +18,7 @@ export class CommanderDamageAssignmentComponent {
 
   playerCommanders = input.required<Commander[]>();
 
-  targetPlayerDamageSources = this.commanderDamageAssignementService.assigningPlayerDamageSources()
+  targetPlayerDamageSources = this.commanderDamageAssignementService.assigningPlayerDamageSources();
 
   updateCommanderDamage(sourceCommadnerId: string, damageAmount: number): void {
     this.commanderDamageAssignementService.assignCommanderDamageToAssigningPlayer(

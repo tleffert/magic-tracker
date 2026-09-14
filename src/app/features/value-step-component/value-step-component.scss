@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 :host {
     gap: 5px;
     display: flex;
@@ -5,10 +7,6 @@
     align-items: center;
 }
 
-.stepper {
-    border-radius: 20px;
-    width: 24px;
-    height: 24px;
-    border: none;
-    cursor: pointer;
+.stepper-button {
+    @include mat.button-density(0);
 }

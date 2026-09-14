@@ -1,3 +1,8 @@
-<button class="stepper" (click)="decrement()">-</button>
+<button class="stepper-button" matIconButton (click)="decrement()">
+    <mat-icon>remove</mat-icon>
+</button>
 <span>{{value()}}</span>
-<button class="stepper" (click)="increment()">+</button>
+<button class="stepper-button" matIconButton (click)="increment()">
+    <mat-icon>add</mat-icon>
+</button>
+<!-- <button class="stepper" (click)="increment()">+</button> -->
