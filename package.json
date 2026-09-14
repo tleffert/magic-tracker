@@ -32,11 +32,13 @@
     "@angular/cli": "^22.1.6",
     "@angular/compiler-cli": "^22.1.0",
     "@types/jest": "^30.0.0",
+    "@types/rosie": "^0.0.45",
     "jest": "^30.5.1",
     "jest-environment-jsdom": "^30.5.1",
     "jest-preset-angular": "^17.0.0",
     "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
+    "rosie": "^2.1.1",
     "typescript": "~6.0.2",
     "vitest": "^4.0.8"
   }
