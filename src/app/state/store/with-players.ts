@@ -21,6 +21,11 @@ export function addPlayerEnityWithCommanders(playerId: Player['id'], commanderId
 export function withPlayers() {
     return signalStoreFeature(
         withEntities(playerConfig),
+        withMethods((store) => ({
+            selectPlayerById(id: Player['id']): Player {
+                return store.playerEntityMap()[id];
+            }
+        })),
         withMethods((store) => ({            
             
             incrementHealth(playerId: Player['id'], amount: number): void {

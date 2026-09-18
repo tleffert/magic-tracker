@@ -23,7 +23,7 @@ export function withGameState() {
         })),
         withComputed((store) => ({
             isAssigningCommanderDamage: computed(() => {
-                return !!store.assigningCommanderDamage
+                return !!store.assigningCommanderDamage()
             })
         }))
     );

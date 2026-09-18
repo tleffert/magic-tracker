@@ -1,8 +1,17 @@
 @let tax = playerSeatService.commanderTax();
 @let seatedPlayer = player();
+@let shouldShowCommanderDamageAssignmentMenu = !playerSeatService.isCommanderDamAssigningAndCurrentUser();
+@let isCommanderDamageAssigning = playerSeatService.isAssigningCommanderDamage();
+@let playerCommanders = commanders();
+@let playerHealth = playerSeatService.currentHealthWithCommander();
 
+<!-- probably use projection slots instead or switch -->
+@if(isCommanderDamageAssigning && shouldShowCommanderDamageAssignmentMenu) {
+    <commander-damage-assignment-component
+    [playerCommanders]="playerCommanders"
+    ></commander-damage-assignment-component>
 
-@if (taxMenuActive) {
+} @else if (taxMenuActive) {
     <!-- input current tax -->
     <command-tax-menu-component [playerId]="seatedPlayer.id" (close)="toggleTaxMenu(); updateTax($event)" ></command-tax-menu-component>
 } @else {
@@ -30,10 +39,7 @@
     </div>
     <!-- move to component -->
     <div class="health-container">
-        <value-step-component [value]="seatedPlayer.health" (step)="updateHealth($event)"></value-step-component>
-        <!-- <button class="health-button" (click)="decreaseHealth()">-</button>
-        <span>{{ seatedPlayer.health }}</span>
-        <button class="health-button" (click)="increaseHealth()">+</button> -->
+        <value-step-component [value]="playerHealth" (change)="updateHealth($event)"></value-step-component>
     </div>
 </div>
 <div>

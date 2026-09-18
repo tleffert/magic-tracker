@@ -25,7 +25,6 @@ export const PlayerStore = signalStore(
 
             const mappings: Record<Player['id'], Commander[]> = {};
             playerEntities.forEach(player => {
-                console.log("=== player", player)
                 if (player.commanderIds) {
                     const [primaryId, partnerId] = player.commanderIds;
                     const primaryCommander = commanderEntityMap[primaryId];
@@ -34,7 +33,6 @@ export const PlayerStore = signalStore(
                     if (partnerId && player.partnerEnabled) {
                         playerCommanders.push(commanderEntityMap[partnerId])
                     }
-                    console.log("=== sssk", playerCommanders, commanderEntityMap)
                     mappings[player.id] = playerCommanders;
                 }
             })

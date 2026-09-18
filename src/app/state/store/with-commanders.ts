@@ -25,6 +25,11 @@ export function withCommanders() {
     return signalStoreFeature(
         withEntities(commanderConfig),
         withMethods((store) => ({
+            getCommanderById(id: Commander['id']): Commander {
+                return store.commanderEntityMap()[id];
+            }
+        })),
+        withMethods((store) => ({
             updateCommanderTax(commanderId: Commander['id'], tax: number = 0): void {
                 patchState(store, updateEntity({
                     id: commanderId,

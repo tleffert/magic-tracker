@@ -8,14 +8,18 @@ export class PlayerSeatService {
     private playerId!: Player['id'];
     playerIdSignal = signal<Player['id']>('');
 
-    currentHealth = signal(40); // Will be configured by the player
+    currentHealth = computed(() => {
+      const player = this.playerStore.selectPlayerById(this.playerIdSignal());
+      return player.health;
+    })
     
     commanderTax = signal(0);
     isAssigningCommanderDamage = this.playerStore.isAssigningCommanderDamage;
 
     playerCommaders = computed(() => {
       const playerId = this.playerIdSignal();
-      return this.playerStore.commandersByOwnerId()[playerId] ?? []
+      
+      return this.playerStore.commandersByOwnerId()[playerId];
     })
 
     isCommanderDamAssigningAndCurrentUser = computed(() => {
@@ -23,7 +27,6 @@ export class PlayerSeatService {
     })
 
     totalCommanderDamage = computed(() => {
-      console.log("asdkjfkasdjfk", this.playerStore.totalCommanderDamageToPlayerById());
       return this.playerStore.totalCommanderDamageToPlayerById()[this.playerId] ?? 0;
     })
 
@@ -68,7 +71,7 @@ export class PlayerSeatService {
    }
 
    togglePlayerPartnerCommander(): void {
-    this.playerStore.togglePartner(this.playerId);
+    this.playerStore.togglePartnerCommander(this.playerId);
    }
 
     
