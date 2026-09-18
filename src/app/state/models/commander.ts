@@ -5,4 +5,5 @@ export type Commander = {
     id: string;
     ownerPlayerId: Player['id'];
     tax: number;
+    isPartner: boolean
 };

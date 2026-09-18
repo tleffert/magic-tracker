@@ -17,7 +17,7 @@ import { DEFAULT_PLAYER_STATE } from './state/models/player';
 export class App implements OnInit{
   private readonly playerStore = inject(PlayerStore);
   protected readonly title = signal('magic-tracker');
-  protected playerEntities = this.playerStore.entities;
+  protected playerEntities = this.playerStore.playerEntities;
 
 
 

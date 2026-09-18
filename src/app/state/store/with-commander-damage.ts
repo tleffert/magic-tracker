@@ -22,17 +22,6 @@ export function withCommanderDamage() {
             }>()
         },
         withState(DEFAULT_COMMANDER_DAMAGE_STATE),
-        withComputed((store) => ({
-            totalCommanderDamageToPlayerById: computed(() => {
-                const byTarget = store.commanderDamageByTarget();
-                const totals: Record<Player['id'], number> = {};
-
-                for (const playerId of Object.keys(byTarget)) {
-                    totals[playerId] = getTotalCommanderDamageToPlayer(playerId, byTarget);
-                }
-                return totals;
-            }),
-        })),
         withMethods((store) => ({
             addCommanderDamage(
                 targetPlayerId: Player['id'],
