@@ -1,2 +1,9 @@
-<value-step-component [value]="updatedTax()" (step)="updateTax($event)"></value-step-component>
+@let commanders = playerCommanders();
+
+@for(commander of commanders;track commander.id ) {
+    <value-step-component [value]="commander.tax" [stepSize]="2" (change)="updateTax($event, commander)"></value-step-component>
+
+}
+<partner-toggle-component [playerId]="playerId()"></partner-toggle-component>
+
 <button (click)="dismiss()">close</button>

@@ -16,12 +16,10 @@ export class ValueStepComponent {
   change = output<number>();
 
   increment(): void {
-    console.log("=== increment");
     this.change.emit(this.stepSize());
   }
 
   decrement(): void {
-    console.log("=== decrement");
     this.change.emit((-(this.stepSize())));
   }
 

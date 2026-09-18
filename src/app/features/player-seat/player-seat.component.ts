@@ -4,7 +4,7 @@ import { CommandTaxMenuComponent } from '../command-tax-menu-component/command-t
 import { Player } from '../../state/models/player';
 import { ValueStepComponent } from '../value-step-component/value-step-component';
 import { CommanderDamageAssignmentComponent } from '../commander-damage-assignment-component/commander-damage-assignment-component';
-import { PlayerStore } from '../../state/store/player.store';
+import { Commander } from '../../state/models/commander';
 
 @Component({
   imports: [CommandTaxMenuComponent, ValueStepComponent, CommanderDamageAssignmentComponent],
@@ -13,9 +13,7 @@ import { PlayerStore } from '../../state/store/player.store';
   templateUrl: './player-seat.html',
   providers: [PlayerSeatService]
 })
-export class PlayerSeatComponent implements OnInit{
-  // This will move
-  private playerStore = inject(PlayerStore);
+export class PlayerSeatComponent implements OnInit {
   playerSeatService = inject(PlayerSeatService);
   taxMenuActive: boolean = false;
   player = input.required<Player>();
@@ -33,8 +31,8 @@ export class PlayerSeatComponent implements OnInit{
     this.taxMenuActive = !this.taxMenuActive;
   }
 
-  updateTax(tax: number): void {
-    this.playerSeatService.updateCommanderTax(tax);
+  updateTax(updateEvent: {tax: number, id: Commander['id']}): void {
+    this.playerSeatService.updateCommanderTax(updateEvent.tax, updateEvent.id);
   }
 
   openAssigningCommanderDamage(): void {

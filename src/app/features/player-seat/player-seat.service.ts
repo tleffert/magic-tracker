@@ -1,6 +1,7 @@
 import { computed, inject, Service, signal} from '@angular/core';
 import { Player } from '../../state/models/player';
 import { PlayerStore } from '../../state/store/player.store';
+import { Commander } from '../../state/models/commander';
 
 @Service()
 export class PlayerSeatService {
@@ -18,7 +19,7 @@ export class PlayerSeatService {
 
     playerCommaders = computed(() => {
       const playerId = this.playerIdSignal();
-      
+
       return this.playerStore.commandersByOwnerId()[playerId];
     })
 
@@ -44,9 +45,8 @@ export class PlayerSeatService {
       this.playerStore.incrementHealth(this.playerId, amount);
     }
 
-    updateCommanderTax(taxAmount: number): void {
-      const commander = this.playerStore.commandersByOwnerId()[this.playerId][0];
-      this.playerStore.updateCommanderTax(commander.id, taxAmount)
+    updateCommanderTax(taxAmount: number,  commanderId: Commander['id']): void {
+      this.playerStore.updateCommanderTax(commanderId, taxAmount)
     }
 
    increaseCommnaderTax() {
@@ -68,10 +68,6 @@ export class PlayerSeatService {
 
    closeCommanderDamageAssignment(): void {
     this.playerStore.clearAssigningCommadanderDamage();
-   }
-
-   togglePlayerPartnerCommander(): void {
-    this.playerStore.togglePartnerCommander(this.playerId);
    }
 
     
