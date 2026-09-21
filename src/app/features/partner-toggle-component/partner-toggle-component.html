@@ -1,6 +1,7 @@
 <section class="partner-section">
     <mat-slide-toggle
           class="partner-toggle"
+          [checked]="parterEnabled()"
           (change)="togglePartnerCommander()"
           >
         Partner
