@@ -1,9 +1,11 @@
 @let commanders = playerCommanders();
 
+<section class="commander-block">
 @for(commander of commanders;track commander.id ) {
     <value-step-component [value]="commander.tax" [stepSize]="2" (change)="updateTax($event, commander)"></value-step-component>
 
 }
-<partner-toggle-component [playerId]="playerId()"></partner-toggle-component>
+</section>
+<partner-toggle-component></partner-toggle-component>
 
 <button (click)="dismiss()">close</button>

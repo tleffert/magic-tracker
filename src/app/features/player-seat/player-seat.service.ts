@@ -9,8 +9,13 @@ export class PlayerSeatService {
     private playerId!: Player['id'];
     playerIdSignal = signal<Player['id']>('');
 
+    player = computed(() => {
+      const id = this.playerIdSignal();
+      return this.playerStore.selectPlayerById(id);
+    });
+
     currentHealth = computed(() => {
-      const player = this.playerStore.selectPlayerById(this.playerIdSignal());
+      const player = this.player();
       return player.health;
     })
     
@@ -49,13 +54,10 @@ export class PlayerSeatService {
       this.playerStore.updateCommanderTax(commanderId, taxAmount)
     }
 
-   increaseCommnaderTax() {
-    this.commanderTax.update(tax => tax + 1);
-   }
-
-   decreaseCommaderTax() {
-    this.commanderTax.update(tax => tax - 1);
-   }
+    togglePartnerCommander(): void {
+      const id = this.playerIdSignal();
+      this.playerStore.togglePartnerCommander(id);
+    }
 
    openCommanderDamageAssignment(): void {
     // toggle for now
