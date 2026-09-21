@@ -19,7 +19,6 @@ export class PlayerSeatService {
       return player.health;
     })
     
-    commanderTax = signal(0);
     isAssigningCommanderDamage = this.playerStore.isAssigningCommanderDamage;
 
     playerCommaders = computed(() => {

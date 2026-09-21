@@ -1,25 +1,28 @@
-@let tax = playerSeatService.commanderTax();
 @let seatedPlayer = player();
-@let shouldShowCommanderDamageAssignmentMenu = !playerSeatService.isCommanderDamAssigningAndCurrentUser();
-@let isCommanderDamageAssigning = playerSeatService.isAssigningCommanderDamage();
+@let shouldShowCommanderDamageAssignmentMenu = shouldShowCommanderDamageAssignment();
 @let playerCommanders = commanders();
 @let playerHealth = playerSeatService.currentHealthWithCommander();
 
 <!-- probably use projection slots instead or switch -->
-@if(isCommanderDamageAssigning && shouldShowCommanderDamageAssignmentMenu) {
-    <commander-damage-assignment-component
-    [playerId]="seatedPlayer.id"
-    [playerCommanders]="playerCommanders"
-    ></commander-damage-assignment-component>
+@if(shouldShowCommanderDamageAssignmentMenu) {
+    @defer (when shouldShowCommanderDamageAssignmentMenu){
+        <commander-damage-assignment-component
+        [playerId]="seatedPlayer.id"
+        [playerCommanders]="playerCommanders"
+        ></commander-damage-assignment-component>
+    }
+   
 
 } @else if (taxMenuActive) {
-    <!-- input current tax -->
-    <command-tax-menu-component 
-    [playerCommanders]="playerCommanders" 
-    [playerId]="seatedPlayer.id"
-    (close)="toggleTaxMenu()" 
-    (updatedTax)="updateTax($event)" 
-    ></command-tax-menu-component>
+    @defer (when taxMenuActive) {
+        <command-tax-menu-component 
+        [playerCommanders]="playerCommanders" 
+        [playerId]="seatedPlayer.id"
+        (close)="toggleTaxMenu()" 
+        (updatedTax)="updateTax($event)" 
+        ></command-tax-menu-component>
+    }
+    
 } @else {
 
 <div class="command-block">
@@ -28,11 +31,7 @@
  <!-- // Clicking / Tapping this will show commander damage from all other players -->
  <button>Commander</button>
  <div class="command-tax">
-     @if (!tax){
          <span (click)="toggleTaxMenu()">Tax</span>
-     } @else {
-         <span>{{tax}}</span>
-     }
  </div>
  <div class="commander-damage">
     <button (click)="openAssigningCommanderDamage()">Damage</button>

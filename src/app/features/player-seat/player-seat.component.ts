@@ -19,6 +19,12 @@ export class PlayerSeatComponent implements OnInit {
   player = input.required<Player>();
   commanders = this.playerSeatService.playerCommaders;
 
+  shouldShowCommanderDamageAssignment = computed(() => {
+    const isCurrentPlayerAssigning = this.playerSeatService.isCommanderDamAssigningAndCurrentUser();
+    const isCurrentlyAssigning = this.playerSeatService.isAssigningCommanderDamage();
+    return !isCurrentPlayerAssigning && isCurrentlyAssigning;
+  })
+
   ngOnInit(): void {
     this.playerSeatService.setPlayerId(this.player().id);
   }
