@@ -1,3 +1,4 @@
+<section class="game-config">
 <section class="toggle-group-selection">
     <label>
         Player Count
@@ -14,9 +15,9 @@
     </mat-button-toggle-group>
 </section>
 <section class="toggle-group-selection">
-    <mat-label>
+    <label>
         Starting Life
-    </mat-label>
+    </label>
     <mat-button-toggle-group
         [hideSingleSelectionIndicator]="true"
         [formField]="gameConfigForm.startingLife"
@@ -33,3 +34,9 @@
     </label>
     <input [formField]="gameConfigForm.seatOrientation">
 </section> -->
+</section>
+<div class="start-game">
+    <button matButton (click)="startGame()">
+        Start Game
+    </button>
+</div>

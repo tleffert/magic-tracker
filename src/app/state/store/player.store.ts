@@ -11,6 +11,7 @@ import { getTotalCommanderDamageToPlayer } from '../utils/getTotalCommanderDamag
 import { createNewCommander } from '../utils/createNewCommader.function';
 import { createNewPlayer } from '../utils/createNewPlayer.function';
 import { updateEntity } from '@ngrx/signals/entities';
+import { GameConfig } from '../models/game-config';
 
 export const PlayerStore = signalStore(
     { providedIn: 'root' },
@@ -42,7 +43,8 @@ export const PlayerStore = signalStore(
     })),
     withMethods((store) => ({
         addPlayer(): void {
-            const newPlayer = createNewPlayer();
+            const startingLife = store.gameConfig().startingLife;
+            const newPlayer = createNewPlayer({health: startingLife});
             const playerCommander = createNewCommander({ownerPlayerId: newPlayer.id});
             newPlayer.commanderIds = [playerCommander.id];            
             patchState(
@@ -51,6 +53,13 @@ export const PlayerStore = signalStore(
                 addCommanderEntity(newPlayer.id, playerCommander),
             );
         },
+    })),
+    withMethods((store) => ({
+        addPlayers(numberOfPlayers: number): void {
+            for(let i = 0; i < numberOfPlayers; i++) {
+                store.addPlayer();
+            }
+        }
     })),
     withMethods((store) => ({
         addPartnerCommander(playerId: Player['id']): void {
@@ -78,6 +87,12 @@ export const PlayerStore = signalStore(
                 store.addPartnerCommander(playerId);
            }
         },
+    })),
+    withMethods((store) => ({
+        startNewGame(config: GameConfig): void {
+            store.setGameConfig(config);
+            store.addPlayers(config.numberOfPlayers);
+        }
     })),
     withComputed((store) => ({
         validCommandersByOwnerId: computed(() => {

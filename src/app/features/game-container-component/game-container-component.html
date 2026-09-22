@@ -1,0 +1,7 @@
+@let players = playerEntities();
+
+@for (player of players; track player.id) {
+    <player-seat
+    [player]="player"
+    ></player-seat>
+}

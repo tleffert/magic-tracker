@@ -8,7 +8,7 @@ import { Commander } from '../../state/models/commander';
 
 @Component({
   imports: [CommandTaxMenuComponent, ValueStepComponent, CommanderDamageAssignmentComponent],
-  selector: 'app-player-seat',
+  selector: 'player-seat',
   styleUrl: './player-seat.scss',
   templateUrl: './player-seat.html',
   providers: [PlayerSeatService]

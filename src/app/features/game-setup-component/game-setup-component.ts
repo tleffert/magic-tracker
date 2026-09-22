@@ -1,26 +1,30 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { form, FormField, required } from '@angular/forms/signals';
 import { GameConfig } from '../../state/models/game-config';
-import {MatFormFieldModule, MatLabel} from '@angular/material/form-field';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { DEFAULT_GAME_CONFIG } from '../../state/utils/default-game-setup';
+import { GameConfigService } from '../../services/game-config-service';
+import { MatButton, MatButtonModule } from '@angular/material/button';
 
 
 @Component({
-  imports: [FormField, MatLabel, MatButtonToggleModule, MatFormFieldModule],
+  imports: [FormField, MatButtonModule, MatButtonToggleModule],
   selector: 'game-setup-component',
   styleUrl: './game-setup-component.scss',
   templateUrl: './game-setup-component.html',
 })
 export class GameSetupComponent {
 
-   gameConfigModel = signal<GameConfig>({
-    numberOfPlayers: 2,
-    startingLife: 20,
-    seatOrientation: ''
-  })
+  private gameConfigService = inject(GameConfigService);
+
+   gameConfigModel = signal<GameConfig>(DEFAULT_GAME_CONFIG)
 
   gameConfigForm = form(this.gameConfigModel, (schemaPath) => {
     required(schemaPath.startingLife)
   });
+
+  startGame(): void {
+    this.gameConfigService.startGameWithConfig(this.gameConfigModel());
+  }
 
 }

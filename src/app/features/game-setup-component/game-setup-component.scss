@@ -11,11 +11,16 @@
     ));
   }
 
+  .game-config {
+    margin-bottom: 10px;
+  }
 
-.toggle-group-selection {
+.toggle-group-selection, .start-game {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 4px;
+    margin-bottom: 10px;
 }
+
