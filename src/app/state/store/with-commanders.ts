@@ -1,5 +1,5 @@
 import { computed, inject } from '@angular/core';
-import { patchState, signalStore, signalStoreFeature, type, withComputed, withHooks, withMethods } from '@ngrx/signals';
+import { patchState, signalStore, signalStoreFeature, SignalStoreFeatureType, type, withComputed, withHooks, withMethods } from '@ngrx/signals';
 import { addEntity, entityConfig, EntityMap, updateEntity, withEntities } from '@ngrx/signals/entities';
 import { v4 as uuid } from 'uuid';
 import { Commander } from '../models/commander';
@@ -7,6 +7,8 @@ import { Player } from '../models/player';
 import { withPlayers } from './with-players';
 import { createNewCommander } from '../utils/createNewCommader.function';
 import { DEFAULT_COMMANDER } from '../utils/defaultCommander';
+
+
 
 export const commanderConfig = entityConfig({
     entity: type<Commander>(),
@@ -41,3 +43,7 @@ export function withCommanders() {
 }
 
 export const CommandersStore = signalStore(withCommanders())
+
+export type CommandersFeature = SignalStoreFeatureType<
+    typeof withCommanders
+>;

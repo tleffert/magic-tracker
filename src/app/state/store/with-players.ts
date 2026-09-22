@@ -1,8 +1,6 @@
-import { patchState, signalStoreFeature, type, withMethods, } from '@ngrx/signals';
+import { patchState, signalStoreFeature, SignalStoreFeatureType, type, withMethods, } from '@ngrx/signals';
 import { addEntity, entityConfig, EntityState, updateEntity, withEntities } from '@ngrx/signals/entities';
 import { DEFAULT_PLAYER_STATE, Player, PlayerCommanderIds } from '../models/player';
-import { computed, Signal } from '@angular/core';
-import { Commander } from '../models/commander';
 
 export const playerConfig = entityConfig({
     entity: type<Player>(),
@@ -17,6 +15,7 @@ export function addPlayerEntity(player: Player) {
 export function addPlayerEnityWithCommanders(playerId: Player['id'], commanderIds: PlayerCommanderIds) {
     return addEntity({ ...DEFAULT_PLAYER_STATE, id: playerId, commanderIds }, playerConfig);
 }
+
 
 export function withPlayers() {
     return signalStoreFeature(
@@ -55,3 +54,7 @@ export function withPlayers() {
         })),
     );
 }
+
+export type PlayersFeature = SignalStoreFeatureType<
+    typeof withPlayers
+>;

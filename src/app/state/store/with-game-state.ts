@@ -1,4 +1,4 @@
-import { patchState, signalStoreFeature, withComputed, withMethods, withState } from "@ngrx/signals";
+import { patchState, signalStoreFeature, SignalStoreFeatureType, withComputed, withMethods, withState } from "@ngrx/signals";
 import { Player } from "../models/player"
 import { computed } from "@angular/core";
 import { DEFAULT_GAME_CONFIG } from "../utils/default-game-setup";
@@ -42,3 +42,8 @@ export function withGameState() {
         }))
     );
 }
+
+
+export type GameStateFeature = SignalStoreFeatureType<
+    typeof withGameState
+>;

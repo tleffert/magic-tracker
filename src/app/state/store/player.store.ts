@@ -12,6 +12,8 @@ import { createNewCommander } from '../utils/createNewCommader.function';
 import { createNewPlayer } from '../utils/createNewPlayer.function';
 import { updateEntity } from '@ngrx/signals/entities';
 import { GameConfig } from '../models/game-config';
+import { addPlayerMethod } from '../methods/add-player.method';
+import { addPartnerCommanderMethod } from '../methods/add-partner-coammder.method'
 
 export const PlayerStore = signalStore(
     { providedIn: 'root' },
@@ -41,19 +43,7 @@ export const PlayerStore = signalStore(
             return mappings;
         })
     })),
-    withMethods((store) => ({
-        addPlayer(): void {
-            const startingLife = store.gameConfig().startingLife;
-            const newPlayer = createNewPlayer({health: startingLife});
-            const playerCommander = createNewCommander({ownerPlayerId: newPlayer.id});
-            newPlayer.commanderIds = [playerCommander.id];            
-            patchState(
-                store,
-                addPlayerEntity(newPlayer),
-                addCommanderEntity(newPlayer.id, playerCommander),
-            );
-        },
-    })),
+    addPlayerMethod(),
     withMethods((store) => ({
         addPlayers(numberOfPlayers: number): void {
             for(let i = 0; i < numberOfPlayers; i++) {
@@ -61,21 +51,7 @@ export const PlayerStore = signalStore(
             }
         }
     })),
-    withMethods((store) => ({
-        addPartnerCommander(playerId: Player['id']): void {
-            const playerPartnerCommander = createNewCommander({ownerPlayerId: playerId});
-            const playerCommanders = store.playerEntityMap()[playerId].commanderIds;
-            if (playerCommanders) {
-                playerCommanders[1] = playerPartnerCommander.id;
-                patchState(store, 
-                    updateEntity({id: playerId, changes: {commanderIds: playerCommanders}}, {collection: 'player'}),
-                    addCommanderEntity(playerId, {...playerPartnerCommander, isPartner: true})
-                );
-            }
-           // Possible error handling
-           // Error state being that we are trying to add a partner commander to player without previously establishing a primary commander
-        },
-    })),
+    addPartnerCommanderMethod(),
     withMethods((store) => ({
         togglePartnerCommander(playerId: Player['id']): void {
             const playerToUpdate = store.playerEntityMap()[playerId];
