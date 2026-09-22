@@ -1,0 +1,35 @@
+<section class="toggle-group-selection">
+    <label>
+        Player Count
+    </label>
+    <mat-button-toggle-group
+        [hideSingleSelectionIndicator]="true"
+        [formField]="gameConfigForm.numberOfPlayers"
+    >
+        <mat-button-toggle [value]="2">2</mat-button-toggle>
+        <mat-button-toggle [value]="3">3</mat-button-toggle>
+        <mat-button-toggle [value]="4">4</mat-button-toggle>
+        <mat-button-toggle [value]="5">5</mat-button-toggle>
+        <mat-button-toggle [value]="6">6</mat-button-toggle>
+    </mat-button-toggle-group>
+</section>
+<section class="toggle-group-selection">
+    <mat-label>
+        Starting Life
+    </mat-label>
+    <mat-button-toggle-group
+        [hideSingleSelectionIndicator]="true"
+        [formField]="gameConfigForm.startingLife"
+            >
+        <mat-button-toggle [value]="20">20</mat-button-toggle>
+        <mat-button-toggle [value]="35">35</mat-button-toggle>
+        <mat-button-toggle [value]="40">40</mat-button-toggle>
+    </mat-button-toggle-group>
+</section>
+<!-- TODO -->
+<!-- <section>
+    <label>
+        Orientation:
+    </label>
+    <input [formField]="gameConfigForm.seatOrientation">
+</section> -->

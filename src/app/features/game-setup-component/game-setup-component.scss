@@ -1,0 +1,21 @@
+@use '@angular/material' as mat;
+
+:host {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+
+    @include mat.button-toggle-overrides((
+      shape: var(--mat-sys-corner-small),
+    ));
+  }
+
+
+.toggle-group-selection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+}
