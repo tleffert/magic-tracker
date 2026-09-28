@@ -1,22 +1,23 @@
 import { Component, effect, inject } from '@angular/core';
 import { PlayerSeatComponent } from '../player-seat/player-seat.component';
 import { PlayerStore } from '../../state/store/player.store';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { GameContainterService } from './game-container.service';
 
 @Component({
-  imports: [PlayerSeatComponent],
+  imports: [PlayerSeatComponent, MatIconModule, MatButtonModule],
   selector: 'game-container-component',
   styleUrl: './game-container-component.scss',
   templateUrl: './game-container-component.html',
 })
 export class GameContainerComponent {
-  private store = inject(PlayerStore);
+  private gameContainerService = inject(GameContainterService);
 
-  playerEntities = this.store.playerEntities;
+  playerEntities = this.gameContainerService.playerEntities;
 
-  constructor() {
-    effect(() => {
-      const thing = this.playerEntities();
-      console.log("=== players", thing);
-    })
+  reset(): void {
+    this.gameContainerService.resetGame();
   }
+
 }

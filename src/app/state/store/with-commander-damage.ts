@@ -3,7 +3,7 @@ import { patchState, signalStoreFeature, type, withComputed, withMethods, withSt
 import { Commander } from '../models/commander';
 import { CommanderDamage, CommanderDamageByTarget } from '../models/commander-damage';
 import { Player } from '../models/player';
-import { updateEntity } from '@ngrx/signals/entities';
+import { removeAllEntities, updateEntity } from '@ngrx/signals/entities';
 import { getTotalCommanderDamageToPlayer } from '../utils/getTotalCommanderDamageToPlayer.function';
 
 export type CommanderDamageState = {
@@ -22,6 +22,11 @@ export function withCommanderDamage() {
             }>()
         },
         withState(DEFAULT_COMMANDER_DAMAGE_STATE),
+        withMethods((store) => ({
+            resetCommanderDamage(): void {
+                patchState(store, DEFAULT_COMMANDER_DAMAGE_STATE)
+            }
+        })),
         withMethods((store) => ({
             addCommanderDamage(
                 targetPlayerId: Player['id'],

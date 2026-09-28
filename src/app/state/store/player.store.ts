@@ -14,35 +14,16 @@ import { updateEntity } from '@ngrx/signals/entities';
 import { GameConfig } from '../models/game-config';
 import { addPlayerMethod } from '../methods/add-player.method';
 import { addPartnerCommanderMethod } from '../methods/add-partner-coammder.method'
+import { withStorageSync } from '@ngrx-toolkit/core';
+
 
 export const PlayerStore = signalStore(
     { providedIn: 'root' },
+    withStorageSync({key: 'game'}),
     withCommanders(),
     withPlayers(),
     withGameState(),
     withCommanderDamage(),
-    withComputed((store) => ({
-        commandersByOwnerId: computed(() => {
-            const playerEntities = store.playerEntities();
-            const commanderEntityMap = store.commanderEntityMap();
-
-            const mappings: Record<Player['id'], Commander[]> = {};
-            playerEntities.forEach(player => {
-                if (player.commanderIds) {
-                    const [primaryId, partnerId] = player.commanderIds;
-                    const primaryCommander = commanderEntityMap[primaryId];
-                    const playerCommanders: Commander[] = [primaryCommander];
-
-                    if (partnerId && player.partnerEnabled) {
-                        playerCommanders.push(commanderEntityMap[partnerId])
-                    }
-                    mappings[player.id] = playerCommanders;
-                }
-            })
-
-            return mappings;
-        })
-    })),
     addPlayerMethod(),
     withMethods((store) => ({
         addPlayers(numberOfPlayers: number): void {
@@ -52,6 +33,14 @@ export const PlayerStore = signalStore(
         }
     })),
     addPartnerCommanderMethod(),
+    withMethods((store) => ({
+        resetGame(): void {
+            store.resetCommanderSlice();
+            store.resetPlayersSlice();
+            store.resetGameState();
+            store.resetCommanderDamage();
+        }
+    })),
     withMethods((store) => ({
         togglePartnerCommander(playerId: Player['id']): void {
             const playerToUpdate = store.playerEntityMap()[playerId];
@@ -90,5 +79,27 @@ export const PlayerStore = signalStore(
             console.log("=== totals", totals);
             return totals;
         }),
-    }))
+    })),
+    withComputed((store) => ({
+        commandersByOwnerId: computed(() => {
+            const playerEntities = store.playerEntities();
+            const commanderEntityMap = store.commanderEntityMap();
+
+            const mappings: Record<Player['id'], Commander[]> = {};
+            playerEntities.forEach(player => {
+                if (player.commanderIds) {
+                    const [primaryId, partnerId] = player.commanderIds;
+                    const primaryCommander = commanderEntityMap[primaryId];
+                    const playerCommanders: Commander[] = [primaryCommander];
+
+                    if (partnerId && player.partnerEnabled) {
+                        playerCommanders.push(commanderEntityMap[partnerId])
+                    }
+                    mappings[player.id] = playerCommanders;
+                }
+            })
+
+            return mappings;
+        })
+    })),
 );

@@ -1,6 +1,6 @@
 import { computed, inject } from '@angular/core';
 import { patchState, signalStore, signalStoreFeature, SignalStoreFeatureType, type, withComputed, withHooks, withMethods } from '@ngrx/signals';
-import { addEntity, entityConfig, EntityMap, updateEntity, withEntities } from '@ngrx/signals/entities';
+import { addEntity, entityConfig, EntityMap, removeAllEntities, updateEntity, withEntities } from '@ngrx/signals/entities';
 import { v4 as uuid } from 'uuid';
 import { Commander } from '../models/commander';
 import { Player } from '../models/player';
@@ -26,6 +26,11 @@ export function addCommanderEntity(ownerPlayerId: Player['id'], overrides: Parti
 export function withCommanders() {
     return signalStoreFeature(
         withEntities(commanderConfig),
+        withMethods((store) => ({
+            resetCommanderSlice(): void {
+                patchState(store, removeAllEntities(commanderConfig))
+            }
+        })),
         withMethods((store) => ({
             getCommanderById(id: Commander['id']): Commander {
                 return store.commanderEntityMap()[id];

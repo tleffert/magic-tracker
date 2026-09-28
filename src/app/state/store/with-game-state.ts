@@ -20,6 +20,11 @@ export function withGameState() {
     return signalStoreFeature(
         withState(DEFAULT_GAME_STATE),
         withMethods((store) => ({
+            resetGameState(): void {
+                patchState(store, DEFAULT_GAME_STATE)
+            }
+        })),
+        withMethods((store) => ({
             setAssigningCommanderDamage(playerId: Player['id']): void {
                 patchState(store, {assigningCommanderDamage: playerId})
             },

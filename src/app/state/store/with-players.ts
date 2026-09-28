@@ -1,5 +1,5 @@
 import { patchState, signalStoreFeature, SignalStoreFeatureType, type, withMethods, } from '@ngrx/signals';
-import { addEntity, entityConfig, EntityState, updateEntity, withEntities } from '@ngrx/signals/entities';
+import { addEntity, entityConfig, EntityState, removeAllEntities, updateEntity, withEntities } from '@ngrx/signals/entities';
 import { DEFAULT_PLAYER_STATE, Player, PlayerCommanderIds } from '../models/player';
 
 export const playerConfig = entityConfig({
@@ -20,6 +20,11 @@ export function addPlayerEnityWithCommanders(playerId: Player['id'], commanderId
 export function withPlayers() {
     return signalStoreFeature(
         withEntities(playerConfig),
+        withMethods((store) => ({
+            resetPlayersSlice(): void {
+                patchState(store, removeAllEntities(playerConfig))
+            }
+        })),
         withMethods((store) => ({
             selectPlayerById(id: Player['id']): Player {
                 return store.playerEntityMap()[id];

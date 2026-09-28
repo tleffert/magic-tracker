@@ -1,7 +1,15 @@
 @let players = playerEntities();
 
+<div>
 @for (player of players; track player.id) {
     <player-seat
     [player]="player"
     ></player-seat>
 }
+</div>
+<button 
+    class="game-settings-button"
+    matIconButton 
+    (click)="reset()">
+    <mat-icon>settings</mat-icon>
+</button>
