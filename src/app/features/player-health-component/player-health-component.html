@@ -1,0 +1,19 @@
+<div class="player-health-change-container ">
+    <button matIconButton 
+        class="negative-button"
+        (click)="updateHealthValue(-1)"
+    >
+        <mat-icon>remove</mat-icon>
+    </button>
+    </div>
+    <div class="player-health">
+        <span>{{currentValueWithExpectedUpdate()}}</span>
+    </div>
+    <div class="player-health-change-container ">
+    <button matIconButton 
+        class="positive-button"
+        (click)="updateHealthValue(1)"
+    >
+        <mat-icon>add</mat-icon>
+    </button>
+</div>

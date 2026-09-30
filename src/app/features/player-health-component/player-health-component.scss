@@ -1,0 +1,41 @@
+@use '@angular/material' as mat;
+
+
+:host {
+    position: relative;
+    display: flex;
+}
+
+.player-health {
+    position: absolute;
+    inset: 0;
+    place-self: center;
+    font-size: xx-large;
+    pointer-events: none;
+}
+
+.player-health-change-container {
+    flex: 1;
+    display: flex;
+
+    button {
+        height: 100%;
+        width: 100%;
+
+        @include mat.icon-button-overrides((
+            container-shape: var(--mat-sys-corner-small),
+        ));
+    }
+}
+
+.positive-button {
+    @include mat.icon-button-overrides((
+        ripple-color: rgba(172, 239, 172, 0.275),
+    ));
+}
+
+.negative-button {
+    @include mat.icon-button-overrides((
+        ripple-color: rgba(239, 141, 141, 0.204),
+    ));
+}

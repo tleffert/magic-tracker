@@ -5,9 +5,10 @@ import { Player } from '../../state/models/player';
 import { ValueStepComponent } from '../value-step-component/value-step-component';
 import { CommanderDamageAssignmentComponent } from '../commander-damage-assignment-component/commander-damage-assignment-component';
 import { Commander } from '../../state/models/commander';
+import { PlayerHealthComponent } from '../player-health-component/player-health-component';
 
 @Component({
-  imports: [CommandTaxMenuComponent, ValueStepComponent, CommanderDamageAssignmentComponent],
+  imports: [CommandTaxMenuComponent, ValueStepComponent, CommanderDamageAssignmentComponent, PlayerHealthComponent],
   selector: 'player-seat',
   styleUrl: './player-seat.scss',
   templateUrl: './player-seat.html',

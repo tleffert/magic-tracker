@@ -38,14 +38,16 @@
  </div>
    
 </div>
-<div>
-    <div>
+<div class="health-container">
+    <!-- <div>
         <span>Player Seat</span>
-    </div>
+    </div> -->
     <!-- move to component -->
-    <div class="health-container">
-        <value-step-component [value]="playerHealth" (change)="updateHealth($event)"></value-step-component>
-    </div>
+    <player-health-component 
+        class="player-health"
+        [currentHealth]="playerHealth"
+        (healthChange)="updateHealth($event)"
+    ></player-health-component>
 </div>
 <div>
    <button>Counters</button> 
